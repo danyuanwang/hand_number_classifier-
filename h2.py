@@ -56,20 +56,28 @@ feature_extractor = VGG16(
 
 feature_extractor.trainable = False
 
+def create_model():
+    model = tf.keras.Sequential()
+    model.add(feature_extractor)
+    model.add(Dense(128, activation = "relu"))
+    model.add(Dense(6, activation = "softmax"))
+    return model
 
-model = tf.keras.Sequential()
-model.add(feature_extractor)
-model.add(Dense(128, activation = "relu"))
-
-model.add(Dense(6, activation = "softmax"))
-
+model = create_model()
 print(model.summary())
 print()
 
 model.compile(optimizer='adam', loss = tf.keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
-model.fit(trX, trY, epochs=3, batch_size = 32)
+checkpoint_filepath = "/checkpoint.h5"
+model_checkpoints = tf.keras.callbacks.ModelCheckpoint(
+    filepath = checkpoint_filepath,
+    save_weights_only = False,
+    monitor = 'val_accuracy',
+    mode = 'max',
+    save_best_only = True)
+model.fit(trX, trY, epochs=1, batch_size = 32, callbacks = [model_checkpoints])
 
 loss, acc = model.evaluate(teX, teY)
 print('\ntest_accuracy: ' + str(acc))
 
-model.save("ml.model")
+#model.save("ml.model")
