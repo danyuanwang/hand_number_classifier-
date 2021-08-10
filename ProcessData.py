@@ -8,10 +8,10 @@ import cv2
 import random
 print(os.getcwd())
 number = 0
-for image in os.listdir(os.path.join(os.getcwd(), "archive/test")):
+for image in os.listdir(os.path.join(os.getcwd(), "archive/train")):
     
     
-    directory = os.path.join("archive/test", image)
+    directory = os.path.join("archive/train", image)
     img = io.imread(os.path.join(os.getcwd(), directory))
     randomAngle = (random.random() *360) + 1
     RotatedImg = rotate(img, angle = randomAngle, mode = 'wrap')
@@ -23,8 +23,8 @@ for image in os.listdir(os.path.join(os.getcwd(), "archive/test")):
     sigma = 0.2
     noisyImg = random_noise(transformedImg, var = sigma ** 2)
     #blurredImg  = filters.gaussian(image,sigma=1,multichannel=True)
-    io.imsave("archive/AugmentedTest/augmentedTest" + str(number) + ".png", RotatedImg)
+    io.imsave("archive/AugmentedTrain/a" + img, RotatedImg)
     number += 1
     print(image + "  " +  str(number))
-    break
+    
     
