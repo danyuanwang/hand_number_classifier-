@@ -7,7 +7,7 @@ import cv2
 
 from tensorflow.keras.applications.vgg19 import VGG19
 
-
+CURRENT_FOLDER = os.getcwd()
 def createData(directory):
     dataX = []
     dataY = []
@@ -23,7 +23,7 @@ def createData(directory):
 
 
 
-trainDir ="C:/Users/stunt/OneDrive/Documents/Hands/archive/train"
+trainDir = CURRENT_FOLDER + "/archive/AugmentedTrain"
 trX, trY = createData(trainDir)
 '''
 plt.imshow(trX[3534], cmap = 'gray')
@@ -38,7 +38,7 @@ print(trY.shape)
 
 #------------------------------------------------
 
-testDir ="C:/Users/stunt/OneDrive/Documents/Hands/archive/test"
+testDir =CURRENT_FOLDER + "/archive/AugmentedTest"
 teX, teY = createData(testDir)
 
 print(teX.shape)
