@@ -5,20 +5,25 @@ from skimage.util import random_noise
 #from skimage import filters
 import os
 import cv2
-
-
-for image in os.listdir(os.getcwd() + "\\archive\\train"):
-    number = 0
-    img = io.imread(image)
-    randomAngle = np.random(0, 360)
+import random
+print(os.getcwd())
+number = 0
+for image in os.listdir(os.path.join(os.getcwd(), "archive/test")):
+    
+    
+    directory = os.path.join("archive/test", image)
+    img = io.imread(os.path.join(os.getcwd(), directory))
+    randomAngle = (random.random() *360) + 1
     RotatedImg = rotate(img, angle = randomAngle, mode = 'wrap')
-    randomXShift = np.random(-61, 61)
-    randomYShift = np.random(-61, 61)
+    randomXShift = (random.random() * 122) - 61
+    randomYShift = (random.random() * 122) - 61
+    #print(randomXShift, randomYShift)
     transform = AffineTransform(translation = (randomXShift, randomYShift))
-    transformedImg = warp(image,transform,mode='wrap')
+    transformedImg = warp(RotatedImg,transform,mode='wrap')
     sigma = 0.2
     noisyImg = random_noise(transformedImg, var = sigma ** 2)
     #blurredImg  = filters.gaussian(image,sigma=1,multichannel=True)
-    cv2.imwrite("archive/AugmentedTrain/augmentedTrain" + number + ".png", noisyImg)
+    cv2.imwrite("archive/AugmentedTest/augmentedTest" + str(number) + ".png", noisyImg)
     number += 1
-    print(image)
+    print(image + "  " +  str(number))
+    
