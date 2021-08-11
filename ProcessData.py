@@ -14,7 +14,7 @@ for image in os.listdir(os.path.join(os.getcwd(), "archive/test")):
     directory = os.path.join("archive/test", image)
     img = io.imread(os.path.join(os.getcwd(), directory))
     #print(img.shape)
-    #img = resize(img, (224, 224))
+    img = resize(img, (224, 224))
     #print(img.shape)
     
     randomAngle = (random.random() *360) + 1
