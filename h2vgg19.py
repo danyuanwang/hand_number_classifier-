@@ -23,7 +23,7 @@ def createData(directory):
 
 
 
-trainDir = CURRENT_FOLDER + "/archive/AugmentedTrain"
+trainDir = CURRENT_FOLDER + "/archive/train"
 trX, trY = createData(trainDir)
 '''
 plt.imshow(trX[3534], cmap = 'gray')
@@ -38,7 +38,7 @@ print(trY.shape)
 
 #------------------------------------------------
 
-testDir =CURRENT_FOLDER + "/archive/AugmentedTest"
+testDir =CURRENT_FOLDER + "/archive/test"
 teX, teY = createData(testDir)
 
 print(teX.shape)
@@ -72,4 +72,4 @@ model.fit(trX, trY, epochs=1, batch_size = 32)
 loss, acc = model.evaluate(teX, teY)
 print('\ntest_accuracy: ' + str(acc))
 
-model.save("new.model")
+model.save("regular.model")
