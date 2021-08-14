@@ -8,11 +8,19 @@ import cv2
 from tensorflow.keras.applications.vgg19 import VGG19
 
 CURRENT_FOLDER = os.getcwd()
+def processImage(img):
+    grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    (thresh, BWImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
+    FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    #print(BWImg.shape)
+    return FinalImg
+
 def createData(directory):
     dataX = []
     dataY = []
     for img in os.listdir(directory):
         imgArr = cv2.imread(os.path.join(directory, img))
+        imgArr = processImage(imgArr)
         imgArr = cv2.resize(imgArr, (224, 224))
         numFing = int(img.split('_')[1][0])
         dataX.append(imgArr)
@@ -23,7 +31,7 @@ def createData(directory):
 
 
 
-trainDir = CURRENT_FOLDER + "/archive/train"
+trainDir = CURRENT_FOLDER + "/archive/AugmentedTrain"
 trX, trY = createData(trainDir)
 '''
 plt.imshow(trX[3534], cmap = 'gray')
@@ -38,7 +46,7 @@ print(trY.shape)
 
 #------------------------------------------------
 
-testDir =CURRENT_FOLDER + "/archive/test"
+testDir =CURRENT_FOLDER + "/archive/AugmentedTest"
 teX, teY = createData(testDir)
 
 print(teX.shape)
@@ -48,9 +56,9 @@ print(teY.shape)
 
 #-----------------------------------------------
 feature_extractor = VGG19(
-    input_shape=(224, 224, 3),
+    input_shape=(224, 224, 1),
     include_top=False,
-    weights='imagenet',
+    weights=  None,#'imagenet',
     pooling='avg'
 )
 
@@ -72,4 +80,4 @@ model.fit(trX, trY, epochs=1, batch_size = 32)
 loss, acc = model.evaluate(teX, teY)
 print('\ntest_accuracy: ' + str(acc))
 
-model.save("regular.model")
+model.save("BW.model")
