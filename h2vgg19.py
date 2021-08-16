@@ -10,7 +10,7 @@ from tensorflow.keras.applications.vgg19 import VGG19
 CURRENT_FOLDER = os.getcwd()
 def processImage(img):
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    (thresh, BWImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
+    (thresh, BWImg) = cv2.threshold(grayImg, 170, 255, cv2.THRESH_BINARY)
     FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
     #print(BWImg.shape)
     return FinalImg
@@ -75,9 +75,9 @@ print(model.summary())
 print()
 
 model.compile(optimizer='adam', loss = tf.keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
-model.fit(trX, trY, epochs=1, batch_size = 32)
+model.fit(trX, trY, epochs=5, batch_size = 32)
 
 loss, acc = model.evaluate(teX, teY)
 print('\ntest_accuracy: ' + str(acc))
 
-model.save("BW.model")
+model.save("BW3Epoc.model")

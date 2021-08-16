@@ -2,10 +2,11 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2
+import keyboard
 
 import time
-
-model = tf.keras.models.load_model("BW.model")
+THRESHOLD = 170
+model = tf.keras.models.load_model("BW3Epoc.model")
 
 def guess(img):
     img = cv2.resize(img, (224, 224))
@@ -20,11 +21,11 @@ def guess(img):
 def convertBW(img):
     #img = cv2.resize(img, (224, 224))
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    (thresh, BWImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
+    (thresh, BWImg) = cv2.threshold(grayImg, THRESHOLD, 255, cv2.THRESH_BINARY)
     FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
     return FinalImg
-cam = cv2.VideoCapture(0)
 
+cam = cv2.VideoCapture(0)
 
 
 
@@ -39,15 +40,19 @@ while True:
     cv2.imshow('test', frame)
     cv2.imshow('BW', BWimg)
     cv2.waitKey(1)
+    try:
+        if keyboard.is_pressed('w'):
+            THRESHOLD += 1
+            print("Threshold: ",THRESHOLD)
+        elif keyboard.is_pressed('s'):
+            THRESHOLD -= 1
+            print("Threshold: ",THRESHOLD)
+    except:
+        continue
+        
     
        
     
 
 
 cam.release()
-
-
-
-
-
-
