@@ -23,7 +23,7 @@ def createData(directory):
 
 
 
-trainDir = CURRENT_FOLDER + "/archive/train"
+trainDir = CURRENT_FOLDER + "/archive/AugmentedTrain"
 trX, trY = createData(trainDir)
 '''
 plt.imshow(trX[3534], cmap = 'gray')
@@ -38,7 +38,7 @@ print(trY.shape)
 
 #------------------------------------------------
 
-testDir =CURRENT_FOLDER + "/archive/test"
+testDir =CURRENT_FOLDER + "/archive/AugmentedTest"
 teX, teY = createData(testDir)
 
 print(teX.shape)
@@ -67,7 +67,7 @@ print(model.summary())
 print()
 
 model.compile(optimizer='adam', loss = tf.keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
-model.fit(trX, trY, epochs=1, batch_size = 32)
+model.fit(trX, trY, epochs=2, batch_size = 32)
 
 loss, acc = model.evaluate(teX, teY)
 print('\ntest_accuracy: ' + str(acc))
