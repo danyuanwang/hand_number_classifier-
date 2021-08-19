@@ -79,7 +79,7 @@ model.compile(optimizer='adam', loss = tf.keras.losses.SparseCategoricalCrossent
 model.fit(trX, trY, epochs=3, batch_size = 32)
 
 
-loss, acc = model.evaluate(teX, teY)git 
+loss, acc = model.evaluate(teX, teY)
 print('\ntest_accuracy: ' + str(acc))
 
 model.save("GreyScale.model")
