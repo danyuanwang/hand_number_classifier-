@@ -43,7 +43,12 @@ def compressFile(file):
     img = img[np.newaxis, ...]
     return img
 
-
+def processImage(img):
+    grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    (thresh, BWImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
+    FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    print(BWImg.shape)
+    return FinalImg
 model = loadModel("modelDanyuan")
 
 
@@ -51,19 +56,21 @@ model = loadModel("modelDanyuan")
     
 
 cam = cv2.VideoCapture(0)
+img = None
 while (True):
     # reading from frame
     ret, img = cam.read()
 
-    rgbImage = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    grayImg = processImage(img)
     cv2.waitKey(1)
-    cv2.imshow('img', rgbImage)
+    cv2.imshow('img', grayImg)
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        cv2.imwrite('capture.png', rgbImage)
+        cv2.imwrite('capture.png', grayImg)
         break
 
 cv2.destroyAllWindows()
 img = compressFile('capture.png')
-cv2.imwrite('compressed.png', img)
+FinalImage = cv2.imread('capture.png')
 prediction = model.predict(img)
 print(prediction)
+print("shape of image:", FinalImage.shape)
