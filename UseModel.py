@@ -46,9 +46,9 @@ def compressFile(file):
 def processImage(img):
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     (thresh, BWImg) = cv2.threshold(grayImg, 127, 255, cv2.THRESH_BINARY)
-    FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    #FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
     print(BWImg.shape)
-    return FinalImg
+    return BWImg
 model = loadModel("modelDanyuan")
 
 
