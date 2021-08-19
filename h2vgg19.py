@@ -11,9 +11,9 @@ CURRENT_FOLDER = os.getcwd()
 def processImage(img):
     grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     (thresh, BWImg) = cv2.threshold(grayImg, 170, 255, cv2.THRESH_BINARY)
-    FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    #FinalImg = cv2.normalize(BWImg, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
     #print(BWImg.shape)
-    return FinalImg
+    return BWImg
 
 def createData(directory):
     dataX = []
@@ -59,10 +59,10 @@ feature_extractor = VGG19(
     input_shape=(224, 224, 1),
     include_top=False,
     weights=  None,#'imagenet',
-    pooling='avg'
+    pooling='avg',
 )
 
-feature_extractor.trainable = False
+feature_extractor.trainable = True
 
 
 model = tf.keras.Sequential()
@@ -75,9 +75,11 @@ print(model.summary())
 print()
 
 model.compile(optimizer='adam', loss = tf.keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
-model.fit(trX, trY, epochs=5, batch_size = 32)
 
-loss, acc = model.evaluate(teX, teY)
+model.fit(trX, trY, epochs=3, batch_size = 32)
+
+
+loss, acc = model.evaluate(teX, teY)git 
 print('\ntest_accuracy: ' + str(acc))
 
-model.save("BW3Epoc.model")
+model.save("GreyScale.model")
